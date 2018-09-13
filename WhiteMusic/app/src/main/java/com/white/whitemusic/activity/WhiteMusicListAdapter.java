@@ -48,7 +48,7 @@ public class WhiteMusicListAdapter extends BaseAdapter {
         }
         WhiteMusicInfoBean whiteMusicInfoBean = lsWhiteMusicInfoBean.get(position);
         TextView title = (TextView) convertView.findViewById(R.id.music_title);
-        title.setText(whiteMusicInfoBean.getName());
+        title.setText(whiteMusicInfoBean.getMusicName());
         // TODO
 //        TextView createTime = (TextView) convertView.findViewById(R.id.music_duration);
 //

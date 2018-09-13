@@ -8,17 +8,17 @@ import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
-import com.white.whitemusic.helper.DBHelper;
-import com.white.whitemusic.helper.PlayListContentProvider;
+import com.white.whitemusic.helper.WhiteMusicDBHelper;
+import com.white.whitemusic.helper.WhiteMusicListContentProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 public class MusicService extends Service{
 
@@ -85,7 +85,7 @@ public class MusicService extends Service{
             //重置播放器状态
             mMusicPlayer.reset();
             //设置播放音乐的地址
-            mMusicPlayer.setDataSource(MusicService.this, item.getSongUri());
+            mMusicPlayer.setDataSource(MusicService.this, item.getMusicUri());
             //准备播放音乐
             mMusicPlayer.prepare();
         } catch (IOException e) {
@@ -202,19 +202,20 @@ public class MusicService extends Service{
         mPlayList.clear();
 
         Cursor cursor = mResolver.query(
-                PlayListContentProvider.CONTENT_SONGS_URI,
+                WhiteMusicListContentProvider.CONTENT_SONGS_URI,
                 null,
                 null,
                 null,
                 null);
 
         while(cursor.moveToNext()) {
-            String songUri = cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.SONG_URI));
-            String albumUri = cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.ALBUM_URI));
-            String name = cursor.getString(cursor.getColumnIndex(DBHelper.NAME));
-            long playedTime = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.LAST_PLAY_TIME));
-            long duration = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.DURATION));
-            WhiteMusicInfoBean item = new WhiteMusicInfoBean(name, Uri.parse(songUri), Uri.parse(albumUri), duration);
+            String songUri = cursor.getString(cursor.getColumnIndexOrThrow(WhiteMusicDBHelper.MUSIC_LIST_URI));
+            String albumUri = cursor.getString(cursor.getColumnIndexOrThrow(WhiteMusicDBHelper.MUSIC_LIST_ALBUM_URI));
+            String name = cursor.getString(cursor.getColumnIndex(WhiteMusicDBHelper.MUSIC_LIST_NAME));
+            long playedTime = cursor.getLong(cursor.getColumnIndexOrThrow(WhiteMusicDBHelper.LAST_PLAY_TIME));
+            long duration = cursor.getLong(cursor.getColumnIndexOrThrow(WhiteMusicDBHelper.MUSIC_LIST_DURATION));
+            WhiteMusicInfoBean item = new WhiteMusicInfoBean(
+                    name, Uri.parse(songUri), Uri.parse(albumUri), null, duration);
             mPlayList.add(item);
         }
 
@@ -232,7 +233,7 @@ public class MusicService extends Service{
         }
 
         public void addPlayList(WhiteMusicInfoBean item) {
-            addPlayListInner(item);
+            addPlayListInner(item, true);
         }
 
         public void play() {
@@ -284,7 +285,7 @@ public class MusicService extends Service{
     //真正实现功能的方法
     public void addPlayListInner(List<WhiteMusicInfoBean> items) {
         //清空数据库中的playlist_table
-        mResolver.delete(PlayListContentProvider.CONTENT_SONGS_URI, null, null);
+        mResolver.delete(WhiteMusicListContentProvider.CONTENT_SONGS_URI, null, null);
         //清空缓存的播放列表
         mPlayList.clear();
 
@@ -324,12 +325,12 @@ public class MusicService extends Service{
     private void insertMusicItemToContentProvider(WhiteMusicInfoBean item) {
 
         ContentValues cv = new ContentValues();
-        cv.put(DBHelper.NAME, item.getName());
-        cv.put(DBHelper.DURATION, item.getDuration());
+        cv.put(WhiteMusicDBHelper.MUSIC_LIST_NAME, item.getMusicName());
+        cv.put(WhiteMusicDBHelper.MUSIC_LIST_DURATION, item.getMusicDuration());
 //        cv.put(DBHelper.LAST_PLAY_TIME, item.get.playedTime);
-        cv.put(DBHelper.SONG_URI, item.getSongUri().toString());
+        cv.put(WhiteMusicDBHelper.MUSIC_LIST_URI, item.getMusicUri().toString());
 //        cv.put(DBHelper.ALBUM_URI, item.albumUri.toString());
-        Uri uri = mResolver.insert(PlayListContentProvider.CONTENT_SONGS_URI, cv);
+        Uri uri = mResolver.insert(WhiteMusicListContentProvider.CONTENT_SONGS_URI, cv);
     }
 
 
@@ -361,7 +362,7 @@ public class MusicService extends Service{
                 case MSG_PROGRESS_UPDATE: {
                     //将音乐的时长和当前播放的进度保存到MusicItem数据结构中，
 //                    mCurrentMusicItem.playedTime = mMusicPlayer.getCurrentPosition();
-                    mCurrentMusicItem.setDuration(mMusicPlayer.getDuration());
+                    mCurrentMusicItem.setMusicDuration(mMusicPlayer.getDuration());
 
                     //通知监听者当前的播放进度
                     for(OnStateChangeListenr l : mListenerList) {
@@ -383,10 +384,10 @@ public class MusicService extends Service{
     private void updateMusicItem(WhiteMusicInfoBean item) {
 
         ContentValues cv = new ContentValues();
-        cv.put(DBHelper.DURATION, item.getDuration());
+        cv.put(WhiteMusicDBHelper.MUSIC_LIST_DURATION, item.getMusicDuration());
 //        cv.put(DBHelper.LAST_PLAY_TIME, item.playedTime);
 
-        String strUri = item.getSongUri().toString();
-        mResolver.update(PlayListContentProvider.CONTENT_SONGS_URI, cv, DBHelper.SONG_URI + "=\"" + strUri + "\"", null);
+        String strUri = item.getMusicUri().toString();
+        mResolver.update(WhiteMusicListContentProvider.CONTENT_SONGS_URI, cv, WhiteMusicDBHelper.MUSIC_LIST_URI + "=\"" + strUri + "\"", null);
     }
 }

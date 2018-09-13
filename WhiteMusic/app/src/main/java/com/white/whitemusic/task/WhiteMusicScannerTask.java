@@ -18,9 +18,10 @@ import com.white.whitemusic.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+// 扫描线程
 public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean, Void> {
 
-    public List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();
+//    public List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();
     public ListView listView;
     public Context context;
 
@@ -52,24 +53,25 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
             while (cursor.moveToNext() && !isCancelled()) {
                 // 获取音乐的路径，这个参数我们实际上不会用到，不过在调试程序的时候可以方便我们看到音乐的真实路径，确定寻找的文件的确就在我们规定的目录当中
                 String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
-                //获取音乐的ID
+                // 获取音乐的ID
                 String id = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
                 //通过URI和ID，组合出改音乐特有的Uri地址
                 Uri musicUri = Uri.withAppendedPath(uri, id);
                 //获取音乐的名称
-                String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                String musicName = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 //获取音乐的时长，单位是毫秒
-                long duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+                long musicDuration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
                 //获取该音乐所在专辑的id
                 int albumId = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ID));
                 //再通过AlbumId组合出专辑的Uri地址
-                Uri albumUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
+                Uri musicAlbumUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
 
-                WhiteMusicInfoBean whiteMusicInfoBean = new WhiteMusicInfoBean(name, musicUri, albumUri, duration);
+                WhiteMusicInfoBean whiteMusicInfoBean = new WhiteMusicInfoBean(
+                        musicName, musicUri, musicAlbumUri, null, musicDuration);
 
                 if (uri != null) {
                     ContentResolver res = context.getContentResolver();
-                    whiteMusicInfoBean.setThumb(Utils.createThumbFromUir(res, albumUri));
+                    whiteMusicInfoBean.setMusicThumb(Utils.createThumbFromUir(res, musicAlbumUri));
                 }
 
                 publishProgress(whiteMusicInfoBean);

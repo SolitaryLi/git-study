@@ -3,72 +3,72 @@ package com.white.whitemusic.bean;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+// 存储Music信息
 public class WhiteMusicInfoBean {
     // 存储音乐的名字
-    String name;
+    String musicName;
      // 存储音乐的Uri地址
-    Uri songUri;
+    Uri musicUri;
     // 存储音乐封面的Uri地址
-    Uri albumUri;
+    Uri musicAlbumUri;
     // 存储封面图片
-    Bitmap thumb;
+    Bitmap musicThumb;
     // 存储音乐的播放时长，单位是毫秒
-    long duration;
+    long musicDuration;
 
-    public WhiteMusicInfoBean(String name, Uri songUri, Uri albumUri, long duration) {
-        this.name = name;
-        this.songUri = songUri;
-        this.albumUri = albumUri;
-        this.thumb = thumb;
-        this.duration = duration;
+    public WhiteMusicInfoBean(String musicName, Uri musicUri, Uri musicAlbumUri, Bitmap musicThumb, long musicDuration) {
+        this.musicName = musicName;
+        this.musicUri = musicUri;
+        this.musicAlbumUri = musicAlbumUri;
+        this.musicThumb = musicThumb;
+        this.musicDuration = musicDuration;
     }
 
-    public String getName() {
-        return name;
+    public String getMusicName() {
+        return musicName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMusicName(String musicName) {
+        this.musicName = musicName;
     }
 
-    public Uri getSongUri() {
-        return songUri;
+    public Uri getMusicUri() {
+        return musicUri;
     }
 
-    public void setSongUri(Uri songUri) {
-        this.songUri = songUri;
+    public void setMusicUri(Uri musicUri) {
+        this.musicUri = musicUri;
     }
 
-    public Uri getAlbumUri() {
-        return albumUri;
+    public Uri getMusicAlbumUri() {
+        return musicAlbumUri;
     }
 
-    public void setAlbumUri(Uri albumUri) {
-        this.albumUri = albumUri;
+    public void setMusicAlbumUri(Uri musicAlbumUri) {
+        this.musicAlbumUri = musicAlbumUri;
     }
 
-    public Bitmap getThumb() {
-        return thumb;
+    public Bitmap getMusicThumb() {
+        return musicThumb;
     }
 
-    public void setThumb(Bitmap thumb) {
-        this.thumb = thumb;
+    public void setMusicThumb(Bitmap musicThumb) {
+        this.musicThumb = musicThumb;
     }
 
-    public long getDuration() {
-        return duration;
+    public long getMusicDuration() {
+        return musicDuration;
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
+    public void setMusicDuration(long musicDuration) {
+        this.musicDuration = musicDuration;
     }
 
-    //重写MusicItem的equals()方法
+    //重写WhiteMusicInfoBean的equals()方法
     @Override
-    public boolean equals(Object o) {
-        WhiteMusicInfoBean another = (WhiteMusicInfoBean) o;
-
+    public boolean equals(Object object) {
+        WhiteMusicInfoBean whiteMusicInfoBean = (WhiteMusicInfoBean) object;
         //音乐的Uri相同，则说明两者相同
-        return another.songUri.equals(this.songUri);
+        return whiteMusicInfoBean.getMusicUri().equals(this.musicUri);
     }
 }

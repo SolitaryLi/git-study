@@ -99,9 +99,9 @@ public class WhiteMusicListActivity extends AppCompatActivity {
 
         //手动回收使用的图片资源
         for(WhiteMusicInfoBean whiteMusicInfoBean : lsWhiteMusicInfoBean) {
-            if( whiteMusicInfoBean.getThumb() != null ) {
-                whiteMusicInfoBean.getThumb().recycle();
-                whiteMusicInfoBean.setThumb(null);
+            if( whiteMusicInfoBean.getMusicThumb() != null ) {
+                whiteMusicInfoBean.getMusicThumb().recycle();
+                whiteMusicInfoBean.setMusicThumb(null);
             }
         }
         lsWhiteMusicInfoBean.clear();

@@ -16,12 +16,15 @@ public class WhiteMusicInfoBean {
     // 存储音乐的播放时长，单位是毫秒
     long musicDuration;
 
-    public WhiteMusicInfoBean(String musicName, Uri musicUri, Uri musicAlbumUri, Bitmap musicThumb, long musicDuration) {
+    long musicPlayTime;
+
+    public WhiteMusicInfoBean(String musicName, Uri musicUri, Uri musicAlbumUri, Bitmap musicThumb, long musicDuration, long musicPlayTime) {
         this.musicName = musicName;
         this.musicUri = musicUri;
         this.musicAlbumUri = musicAlbumUri;
         this.musicThumb = musicThumb;
         this.musicDuration = musicDuration;
+        this.musicPlayTime = musicPlayTime;
     }
 
     public String getMusicName() {
@@ -62,6 +65,14 @@ public class WhiteMusicInfoBean {
 
     public void setMusicDuration(long musicDuration) {
         this.musicDuration = musicDuration;
+    }
+
+    public long getMusicPlayTime() {
+        return musicPlayTime;
+    }
+
+    public void setMusicPlayTime(long musicPlayTime) {
+        this.musicPlayTime = musicPlayTime;
     }
 
     //重写WhiteMusicInfoBean的equals()方法

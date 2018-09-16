@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.white.whitemusic.R;
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
+import com.white.whitemusic.utils.Utils;
 
 import java.util.List;
 
@@ -50,21 +52,21 @@ public class WhiteMusicListAdapter extends BaseAdapter {
         TextView title = (TextView) convertView.findViewById(R.id.music_title);
         title.setText(whiteMusicInfoBean.getMusicName());
         // TODO
-//        TextView createTime = (TextView) convertView.findViewById(R.id.music_duration);
-//
-//        // 调用辅助函数转换时间格式
-//        String times = Utils.convertMSecendToTime(musicInformationBean.getDuration());
-//        times = String.format(context.getString(R.string.duration), times);
-//        createTime.setText(times);
-//
-//        ImageView thumb = (ImageView) convertView.findViewById(R.id.music_thumb);
-//        if(thumb != null) {
-//            if (musicInformationBean.getThumb() != null) {
-//                thumb.setImageBitmap(musicInformationBean.getThumb());
-//            } else {
-//                thumb.setImageResource(R.mipmap.default_cover);
-//            }
-//        }
+        TextView createTime = (TextView) convertView.findViewById(R.id.music_duration);
+
+        // 调用辅助函数转换时间格式
+        String times = Utils.convertMSecendToTime(whiteMusicInfoBean.getMusicDuration());
+        times = String.format(context.getString(R.string.duration), times);
+        createTime.setText(times);
+
+        ImageView thumb = (ImageView) convertView.findViewById(R.id.music_thumb);
+        if(thumb != null) {
+            if (whiteMusicInfoBean.getMusicThumb() != null) {
+                thumb.setImageBitmap(whiteMusicInfoBean.getMusicThumb());
+            } else {
+                thumb.setImageResource(R.mipmap.default_cover);
+            }
+        }
         return convertView;
 
     }

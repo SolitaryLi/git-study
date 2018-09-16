@@ -67,7 +67,7 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
                 Uri musicAlbumUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
 
                 WhiteMusicInfoBean whiteMusicInfoBean = new WhiteMusicInfoBean(
-                        musicName, musicUri, musicAlbumUri, null, musicDuration);
+                        musicName, musicUri, musicAlbumUri, null, musicDuration, 0);
 
                 if (uri != null) {
                     ContentResolver res = context.getContentResolver();

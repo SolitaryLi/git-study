@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.white.whitemusic.activity.WhiteMusicListActivity;
+import com.white.whitemusic.service.WhiteMusicPermissionService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,30 +20,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        verifyStoragePermissions(this);
+        WhiteMusicPermissionService.modifyAppPermission(this);
         // TODO
         Intent intent = new Intent(MainActivity.this, WhiteMusicListActivity.class);
         startActivity(intent);
-    }
-
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            "android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.WRITE_EXTERNAL_STORAGE" };
-
-
-    public static void verifyStoragePermissions(Activity activity) {
-
-        try {
-            //检测是否有写的权限
-            int permission = ActivityCompat.checkSelfPermission(activity,
-                    "android.permission.WRITE_EXTERNAL_STORAGE");
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                // 没有写的权限，去申请写的权限，会弹出对话框
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

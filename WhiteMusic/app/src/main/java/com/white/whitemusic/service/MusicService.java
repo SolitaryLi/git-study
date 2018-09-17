@@ -111,6 +111,7 @@ public class MusicService extends Service{
         mResolver = getContentResolver();
         mPlayList = new ArrayList<WhiteMusicInfoBean>();
         mPaused = false;
+        // TODO
         mMusicPlayer.setOnCompletionListener(mOnCompletionListener);
 
         IntentFilter commandFilter = new IntentFilter();

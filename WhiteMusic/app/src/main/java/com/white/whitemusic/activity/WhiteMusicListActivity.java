@@ -27,7 +27,9 @@ import android.widget.TextView;
 
 import com.white.whitemusic.R;
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
+import com.white.whitemusic.listenr.OnMusicStatusChangeListener;
 import com.white.whitemusic.service.MusicService;
+import com.white.whitemusic.service.WhiteMusicPlayService;
 import com.white.whitemusic.task.WhiteMusicScannerTask;
 import com.white.whitemusic.utils.Utils;
 
@@ -37,9 +39,9 @@ import java.util.List;
 public class WhiteMusicListActivity extends AppCompatActivity {
 
     private WhiteMusicScannerTask whiteMusicScannerTask;
-    public static List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();;
+    public static List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();
     private ListView listView;
-    private MusicService.MusicServiceIBinder mMusicService;
+    private WhiteMusicPlayService.WhiteMusicPlayServiceIBinder whiteMusicPlayService;
 
     private Button mPlayBtn;
     private Button mPreBtn;
@@ -50,6 +52,27 @@ public class WhiteMusicListActivity extends AppCompatActivity {
     private SeekBar mMusicSeekBar;
 //    private MusicUpdateTask mMusicUpdateTask;
 
+    private OnMusicStatusChangeListener onMusicStatusChangeListener = new OnMusicStatusChangeListener() {
+
+        @Override
+        public void onMusicPlayProgressChange(WhiteMusicInfoBean whiteMusicInfoBean) {
+            updatePlayingInfo(whiteMusicInfoBean);
+        }
+
+        @Override
+        public void onMusicPlay(WhiteMusicInfoBean whiteMusicInfoBean) {
+            mPlayBtn.setBackgroundResource(R.mipmap.ic_pause);
+            updatePlayingInfo(whiteMusicInfoBean);
+            enableControlPanel(true);
+        }
+
+        @Override
+        public void onMusicPause(WhiteMusicInfoBean whiteMusicInfoBean) {
+            mPlayBtn.setBackgroundResource(R.mipmap.ic_play);
+            enableControlPanel(true);
+        }
+    };
+
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -57,10 +80,10 @@ public class WhiteMusicListActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
 
             //绑定成功后，取得MusicSercice提供的接口
-            mMusicService = (MusicService.MusicServiceIBinder) service;
-            mMusicService.registerOnStateChangeListener(mStateChangeListenr);
+            whiteMusicPlayService = (WhiteMusicPlayService.WhiteMusicPlayServiceIBinder) service;
+            whiteMusicPlayService.registerOnMusicStataChangeListener(onMusicStatusChangeListener);
 
-            WhiteMusicInfoBean item = mMusicService.getCurrentMusic();
+            WhiteMusicInfoBean item = whiteMusicPlayService.getCurrentMusic();
             if(item == null) {
                 enableControlPanel(false);
                 return;
@@ -68,7 +91,7 @@ public class WhiteMusicListActivity extends AppCompatActivity {
             else {
                 updatePlayingInfo(item);
             }
-            if(mMusicService.isPlaying()) {
+            if(whiteMusicPlayService.isMusicPlaying()) {
                 mPlayBtn.setBackgroundResource(R.mipmap.ic_pause);
             }
         }
@@ -131,8 +154,8 @@ public class WhiteMusicListActivity extends AppCompatActivity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
 
-            if(mMusicService != null) {
-                mMusicService.seekTo(seekBar.getProgress());
+            if(whiteMusicPlayService != null) {
+                whiteMusicPlayService.musicSeekTo(seekBar.getProgress());
             }
         }
     };
@@ -143,9 +166,9 @@ public class WhiteMusicListActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             WhiteMusicInfoBean item = lsWhiteMusicInfoBean.get(position);
-            if(mMusicService != null) {
+            if(whiteMusicPlayService != null) {
                 //通过MusicService提供的接口，把要添加的音乐交给MusicService处理
-                mMusicService.addPlayList(lsWhiteMusicInfoBean.get(position));
+                whiteMusicPlayService.addMusicPlayList(lsWhiteMusicInfoBean.get(position));
             }
 
             //添加播放音乐的代码
@@ -244,54 +267,34 @@ public class WhiteMusicListActivity extends AppCompatActivity {
         mMusicTitle.setText(item.getMusicName());
     }
 
-    private MusicService.OnStateChangeListenr mStateChangeListenr = new MusicService.OnStateChangeListenr() {
 
-        @Override
-        public void onPlayProgressChange(WhiteMusicInfoBean item) {
-
-            updatePlayingInfo(item);
-        }
-
-        @Override
-        public void onPlay(WhiteMusicInfoBean item) {
-            mPlayBtn.setBackgroundResource(R.mipmap.ic_pause);
-            updatePlayingInfo(item);
-            enableControlPanel(true);
-        }
-
-        @Override
-        public void onPause(WhiteMusicInfoBean item) {
-            mPlayBtn.setBackgroundResource(R.mipmap.ic_play);
-            enableControlPanel(true);
-        }
-    };
 
 
     public void onClick(View view) {
         switch (view.getId()) {
 
             case R.id.play_btn: {
-                if(mMusicService != null) {
-                    if(!mMusicService.isPlaying()) {
-                        mMusicService.play();
+                if(null != whiteMusicPlayService) {
+                    if(!whiteMusicPlayService.isMusicPlaying()) {
+                        whiteMusicPlayService.musicPlay();
                     }
                     else {
-                        mMusicService.pause();
+                        whiteMusicPlayService.musicPlayPause();
                     }
                 }
             }
             break;
 
             case R.id.next_btn: {
-                if(mMusicService != null) {
-                    mMusicService.playNext();
+                if(null != whiteMusicPlayService) {
+                    whiteMusicPlayService.musicPlayNext();
                 }
             }
             break;
 
             case R.id.pre_btn: {
-                if(mMusicService != null) {
-                    mMusicService.playPre();
+                if(null != whiteMusicPlayService) {
+                    whiteMusicPlayService.musicPlayPause();
                 }
             }
             break;
@@ -304,7 +307,7 @@ public class WhiteMusicListActivity extends AppCompatActivity {
         builder.setIcon(R.mipmap.ic_playlist);
         builder.setTitle(R.string.play_list);
 
-        List<WhiteMusicInfoBean> playList = mMusicService.getPlayList();
+        List<WhiteMusicInfoBean> playList = whiteMusicPlayService.getMusicPlayList();
         ArrayList<String> data = new ArrayList<String>();
         for(WhiteMusicInfoBean music : playList) {
             data.add(music.getMusicName());

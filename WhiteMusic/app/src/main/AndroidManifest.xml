@@ -36,11 +36,11 @@
 
         <!--声明新创建的Service-->
         <service
-            android:name=".service.MusicService"
+            android:name=".service.WhiteMusicPlayService"
             android:enabled="true"
             android:exported="true"></service>
 
-        <receiver android:name=".helper.AnddleMusicAppWidget">
+        <receiver android:name=".helper.WhiteMusicAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

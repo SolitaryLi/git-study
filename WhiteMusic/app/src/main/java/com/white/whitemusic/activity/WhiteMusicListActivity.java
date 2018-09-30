@@ -1,19 +1,13 @@
 package com.white.whitemusic.activity;
 
 import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +22,6 @@ import android.widget.TextView;
 import com.white.whitemusic.R;
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
 import com.white.whitemusic.listenr.OnMusicStatusChangeListener;
-import com.white.whitemusic.service.MusicService;
 import com.white.whitemusic.service.WhiteMusicPlayService;
 import com.white.whitemusic.task.WhiteMusicScannerTask;
 import com.white.whitemusic.utils.Utils;
@@ -74,7 +67,7 @@ public class WhiteMusicListActivity extends AppCompatActivity {
     };
 
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
+    private ServiceConnection serviceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -132,11 +125,11 @@ public class WhiteMusicListActivity extends AppCompatActivity {
         whiteMusicScannerTask.context = this;
         whiteMusicScannerTask.execute();
 
-        Intent i = new Intent(this, MusicService.class);
+        Intent intent = new Intent(this, WhiteMusicPlayService.class);
         //启动MusicService
-        startService(i);
+        startService(intent);
         //实现绑定操作
-        bindService(i, mServiceConnection, BIND_AUTO_CREATE);
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
 
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
@@ -165,10 +158,10 @@ public class WhiteMusicListActivity extends AppCompatActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            WhiteMusicInfoBean item = lsWhiteMusicInfoBean.get(position);
+            WhiteMusicInfoBean whiteMusicInfoBean = lsWhiteMusicInfoBean.get(position);
             if(whiteMusicPlayService != null) {
                 //通过MusicService提供的接口，把要添加的音乐交给MusicService处理
-                whiteMusicPlayService.addMusicPlayList(lsWhiteMusicInfoBean.get(position));
+                whiteMusicPlayService.addMusicPlayList(whiteMusicInfoBean);
             }
 
             //添加播放音乐的代码
@@ -186,6 +179,8 @@ public class WhiteMusicListActivity extends AppCompatActivity {
             whiteMusicScannerTask.cancel(true);
         }
         whiteMusicScannerTask = null;
+        whiteMusicPlayService.unregisterOnMusicStataChangeListener(onMusicStatusChangeListener);
+        unbindService(serviceConnection);
 
         //手动回收使用的图片资源
         for(WhiteMusicInfoBean whiteMusicInfoBean : lsWhiteMusicInfoBean) {
@@ -195,8 +190,6 @@ public class WhiteMusicListActivity extends AppCompatActivity {
             }
         }
         lsWhiteMusicInfoBean.clear();
-
-        unbindService(mServiceConnection);
     }
 
 //    private ListView.MultiChoiceModeListener mMultiChoiceListener = new AbsListView.MultiChoiceModeListener() {
@@ -294,7 +287,7 @@ public class WhiteMusicListActivity extends AppCompatActivity {
 
             case R.id.pre_btn: {
                 if(null != whiteMusicPlayService) {
-                    whiteMusicPlayService.musicPlayPause();
+                    whiteMusicPlayService.musicPlayPre();
                 }
             }
             break;

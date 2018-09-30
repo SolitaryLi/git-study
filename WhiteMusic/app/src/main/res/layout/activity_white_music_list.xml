@@ -22,7 +22,7 @@
     <LinearLayout
         android:id="@+id/control_panel"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="90dp"
         android:orientation="vertical"
         android:background="@color/colorPrimary">
 
@@ -73,8 +73,8 @@
 
             <Button
                 android:id="@+id/play_btn"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
                 android:layout_centerInParent="true"
                 android:text=""
                 android:background="@mipmap/ic_play"
@@ -82,8 +82,8 @@
 
             <Button
                 android:id="@+id/pre_btn"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
                 android:layout_marginRight="50dp"
                 android:layout_toLeftOf="@id/play_btn"
                 android:layout_centerVertical="true"
@@ -93,8 +93,8 @@
 
             <Button
                 android:id="@+id/next_btn"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
                 android:layout_marginLeft="50dp"
                 android:layout_toRightOf="@id/play_btn"
                 android:layout_centerVertical="true"

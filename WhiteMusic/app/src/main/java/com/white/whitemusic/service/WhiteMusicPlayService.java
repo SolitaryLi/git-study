@@ -19,9 +19,11 @@ import android.support.annotation.Nullable;
 
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
 import com.white.whitemusic.constant.WhiteMusicConstant;
+import com.white.whitemusic.helper.WhiteMusicAppWidget;
 import com.white.whitemusic.helper.WhiteMusicDBHelper;
 import com.white.whitemusic.helper.WhiteMusicListContentProvider;
 import com.white.whitemusic.listenr.OnMusicStatusChangeListener;
+import com.white.whitemusic.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,9 @@ public class WhiteMusicPlayService extends Service {
                     for (OnMusicStatusChangeListener onMusicStatusChangeListener : lsMusicStatusChangeListener) {
                         onMusicStatusChangeListener.onMusicPlayProgressChange(currentMusicInfoBean);
                     }
+
+                    updateMusicItemInfo(currentMusicInfoBean);
+                    sendEmptyMessageDelayed(MSG_PROGRESS_UPDATE, 1000);
                 }
                 break;
             }
@@ -78,7 +83,7 @@ public class WhiteMusicPlayService extends Service {
             String action = intent.getAction();
             if (WhiteMusicConstant.ACTION_PLAY_MUSIC_UPDATE.equals(action)) {
                 // TODO
-//                updateAppWidget(mCurrentMusicItem);
+                updateAppWidget(currentMusicInfoBean);
             }
         }
     };
@@ -107,7 +112,7 @@ public class WhiteMusicPlayService extends Service {
         }
         // 播放暂停
         public void musicPlayPause() {
-            musicPlayPause();
+            musicPauseCurrentInner();
         }
         //
         public void musicSeekTo(int pos) {
@@ -115,7 +120,7 @@ public class WhiteMusicPlayService extends Service {
         }
         // 注册监听事件
         public void registerOnMusicStataChangeListener(OnMusicStatusChangeListener onMusicStatusChangeListener) {
-            removeOnMusicStatusChangeInner(onMusicStatusChangeListener);
+            setOnMusicStatusChangeInner(onMusicStatusChangeListener);
         }
         // 释放监听事件
         public void unregisterOnMusicStataChangeListener(OnMusicStatusChangeListener onMusicStatusChangeListener) {
@@ -157,7 +162,7 @@ public class WhiteMusicPlayService extends Service {
             musicPreparePlay(currentMusicInfoBean);
         }
         // TODO
-//        updateAppWidget(mCurrentMusicItem);
+        updateAppWidget(currentMusicInfoBean);
     }
 
     @Override
@@ -285,6 +290,10 @@ public class WhiteMusicPlayService extends Service {
     // 添加音乐到音乐一览中
     private void addMusicPlayListInner(WhiteMusicInfoBean whiteMusicInfoBean, boolean needPlay) {
         if (lsWhiteMusicInfoBean.contains(whiteMusicInfoBean)) {
+            if (needPlay) {
+                currentMusicInfoBean = whiteMusicInfoBean;
+                musicPlayInner();
+            }
             return;
         }
         // 新添加音乐，添加到List最开始位置
@@ -355,7 +364,7 @@ public class WhiteMusicPlayService extends Service {
         handler.removeMessages(MSG_PROGRESS_UPDATE);
         handler.sendEmptyMessage(MSG_PROGRESS_UPDATE);
         // TODO
-//        updateAppWidget(mCurrentMusicItem);
+        updateAppWidget(currentMusicInfoBean);
     }
     //
     private void musicPauseCurrentInner() {
@@ -366,7 +375,7 @@ public class WhiteMusicPlayService extends Service {
         }
         handler.removeMessages(MSG_PROGRESS_UPDATE);
         // TODO
-//        updateAppWidget(mCurrentMusicItem);
+        updateAppWidget(currentMusicInfoBean);
     }
 
     // 获取当前播放音乐
@@ -417,5 +426,16 @@ public class WhiteMusicPlayService extends Service {
         Uri uri = contentRrovider.insert(WhiteMusicListContentProvider.CONTENT_SONGS_URI, contentValues);
     }
 
-
+    private void updateAppWidget(WhiteMusicInfoBean whiteMusicInfoBean) {
+        if (whiteMusicInfoBean != null) {
+            if(whiteMusicInfoBean.getMusicThumb() == null) {
+                ContentResolver res = getContentResolver();
+                whiteMusicInfoBean.setMusicThumb(Utils.createThumbFromUir(res, whiteMusicInfoBean.getMusicAlbumUri()));
+            }
+            WhiteMusicAppWidget.performUpdates(WhiteMusicPlayService.this,
+                    whiteMusicInfoBean.getMusicName(),
+                    getMediaPlayerPlaying(),
+                    whiteMusicInfoBean.getMusicThumb());
+        }
+    }
 }

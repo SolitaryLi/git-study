@@ -11,9 +11,10 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.white.whitemusic.R;
-import com.white.whitemusic.service.MusicService;
+import com.white.whitemusic.constant.WhiteMusicConstant;
+import com.white.whitemusic.service.WhiteMusicPlayService;
 
-public class AnddleMusicAppWidget extends AppWidgetProvider {
+public class WhiteMusicAppWidget extends AppWidgetProvider {
 
     private static int [] sAppWidgetIds;
 
@@ -23,21 +24,21 @@ public class AnddleMusicAppWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.anddle_music_app_widget);
         views.setTextViewText(R.id.music_name, musicName);
 
-        final ComponentName serviceName = new ComponentName(context, MusicService.class);
+        final ComponentName serviceName = new ComponentName(context, WhiteMusicPlayService.class);
 
-        Intent nextIntent = new Intent(MusicService.ACTION_PLAY_MUSIC_NEXT);
+        Intent nextIntent = new Intent(WhiteMusicConstant.ACTION_PLAY_MUSIC_NEXT);
         nextIntent.setComponent(serviceName);
         PendingIntent nextPendingIntent = PendingIntent.getService(context,
                 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.next_btn2, nextPendingIntent);
 
-        Intent preIntent = new Intent(MusicService.ACTION_PLAY_MUSIC_PRE);
+        Intent preIntent = new Intent(WhiteMusicConstant.ACTION_PLAY_MUSIC_PRE);
         preIntent.setComponent(serviceName);
         PendingIntent prePendingIntent = PendingIntent.getService(context,
                 0, preIntent, 0);
         views.setOnClickPendingIntent(R.id.pre_btn2, prePendingIntent);
 
-        Intent toggleIntent = new Intent(MusicService.ACTION_PLAY_MUSIC_TOGGLE);
+        Intent toggleIntent = new Intent(WhiteMusicConstant.ACTION_PLAY_MUSIC_TOGGLE);
         toggleIntent.setComponent(serviceName);
         PendingIntent togglePendingIntent = PendingIntent.getService(context,
                 0, toggleIntent, 0);
@@ -75,13 +76,13 @@ public class AnddleMusicAppWidget extends AppWidgetProvider {
 
         performUpdates(context, context.getString(R.string.no_song), false, null);
 
-        Intent updateIntent = new Intent(MusicService.ACTION_PLAY_MUSIC_UPDATE);
+        Intent updateIntent = new Intent(WhiteMusicConstant.ACTION_PLAY_MUSIC_UPDATE);
         context.sendBroadcast(updateIntent);
     }
 
     @Override
     public void onEnabled(Context context) {
-        Intent i = new Intent(context, MusicService.class);
+        Intent i = new Intent(context, WhiteMusicPlayService.class);
         context.startService(i);
     }
 }

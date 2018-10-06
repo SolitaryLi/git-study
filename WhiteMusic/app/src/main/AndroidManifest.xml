@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.white.whitemusic">
+
     <!-- 添加权限 APP获取读取本地文件 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 添加权限 APP写入本地文件 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- Activity 注册 -->
-    <!--android:icon / android:roundIcon 图标-->
+    <!-- android:icon / android:roundIcon 图标 -->
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_logo_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/noTitle">
+        <activity
+            android:name=".activity.WhiteMusicContentActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,10 +29,8 @@
             </intent-filter>
         </activity>
 
-
-        <activity android:name=".activity.WhiteMusicListActivity" />
         <activity android:name=".activity.WhiteMusicPlayActivity" />
-        <activity android:name=".activity.WhiteMusicMainActivity" />
+        <!-- <activity android:name=".activity.WhiteMusicMainActivity" /> -->
 
         <provider
             android:name=".helper.WhiteMusicListContentProvider"
@@ -34,13 +38,19 @@
             android:enabled="true"
             android:exported="true" />
 
-        <!--声明新创建的Service-->
-        <service
+        <!-- 声明新创建的Service -->
+<!--        <service
             android:name=".service.WhiteMusicPlayService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />-->
 
-        <receiver android:name=".helper.WhiteMusicAppWidget">
+        <service android:name=".service.WhiteMusicPlayService" >
+            <intent-filter>
+                <action android:name="com.white.whitemusic.service.WhiteMusicPlayService" />
+            </intent-filter>
+        </service>
+
+        <!--<receiver android:name=".helper.WhiteMusicAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -48,8 +58,8 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/anddle_music_app_widget_info" />
-        </receiver>
-    </application>
+        </receiver>-->
 
+    </application>
 
 </manifest>

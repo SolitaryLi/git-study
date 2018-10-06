@@ -10,9 +10,9 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.widget.ListView;
 
-import com.white.whitemusic.activity.WhiteMusicListActivity;
-import com.white.whitemusic.activity.WhiteMusicListAdapter;
+import com.white.whitemusic.Adapter.WhiteMusicListAdapter;
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
+import com.white.whitemusic.manager.WhiteMusicLocalListManager;
 import com.white.whitemusic.utils.Utils;
 
 import java.util.ArrayList;
@@ -21,9 +21,8 @@ import java.util.List;
 // 扫描线程
 public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean, Void> {
 
-//    public List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();
-    public ListView listView;
     public Context context;
+    public WhiteMusicListAdapter whiteMusicListAdapter;
 
     @Override
     protected Void doInBackground(Object... objects) {
@@ -36,6 +35,8 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
                 MediaStore.Audio.Media._ID,
                 // 对应文件的标题
                 MediaStore.Audio.Media.TITLE,
+                // 对应文件的艺术家
+                MediaStore.Audio.Media.ARTIST,
                 // 对应文件所在的专辑ID，在后面获取封面图片时会用到
                 MediaStore.Audio.Media.ALBUM_ID,
                 // 对应文件的存放位置
@@ -59,6 +60,8 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
                 Uri musicUri = Uri.withAppendedPath(uri, id);
                 //获取音乐的名称
                 String musicName = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                //获取音乐的艺术家
+                String musicArtist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 //获取音乐的时长，单位是毫秒
                 long musicDuration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
                 //获取该音乐所在专辑的id
@@ -67,7 +70,7 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
                 Uri musicAlbumUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
 
                 WhiteMusicInfoBean whiteMusicInfoBean = new WhiteMusicInfoBean(
-                        musicName, musicUri, musicAlbumUri, null, musicDuration, 0);
+                        musicName, musicArtist, musicUri, musicAlbumUri, null, musicDuration, 0);
 
                 if (uri != null) {
                     ContentResolver res = context.getContentResolver();
@@ -85,11 +88,11 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
     @Override
     protected void onProgressUpdate(WhiteMusicInfoBean... values) {
 
-        WhiteMusicInfoBean data = values[0];
+        WhiteMusicInfoBean whiteMusicInfoBean = values[0];
 
         // 这是主线程，在这里把要显示的音乐添加到音乐的展示列表当中。
-        WhiteMusicListActivity.lsWhiteMusicInfoBean.add(data);
-        WhiteMusicListAdapter whiteMusicListAdapter = (WhiteMusicListAdapter)listView .getAdapter();
-        whiteMusicListAdapter.notifyDataSetChanged();
+        List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();
+        lsWhiteMusicInfoBean.add(whiteMusicInfoBean);
+        whiteMusicListAdapter.setData(lsWhiteMusicInfoBean);
     }
 }

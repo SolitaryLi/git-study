@@ -17,6 +17,8 @@ public class WhiteMusicDBHelper extends SQLiteOpenHelper {
     public final static String MUSIC_LIST_ID = "music_id";
     // 列表中音乐的名字
     public final static String MUSIC_LIST_NAME = "music_name";
+    // 列表中音乐的艺术家
+    public final static String MUSIC_LIST_ARTIST = "music_artist";
     // 音乐上次播放时间
     public final static String LAST_PLAY_TIME = "last_play_time";
     // 音乐实际物理地址
@@ -41,6 +43,7 @@ public class WhiteMusicDBHelper extends SQLiteOpenHelper {
                 + "("
                 + MUSIC_LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + MUSIC_LIST_NAME +" VARCHAR(256),"
+                + MUSIC_LIST_ARTIST +" VARCHAR(256),"
                 + LAST_PLAY_TIME +" LONG,"
                 + MUSIC_LIST_URI +" VARCHAR(128),"
                 + MUSIC_LIST_ALBUM_URI +" VARCHAR(128),"

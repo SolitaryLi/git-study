@@ -7,6 +7,8 @@ import android.net.Uri;
 public class WhiteMusicInfoBean {
     // 存储音乐的名字
     String musicName;
+    // 存储艺术家的名字
+    String artistName;
      // 存储音乐的Uri地址
     Uri musicUri;
     // 存储音乐封面的Uri地址
@@ -18,8 +20,9 @@ public class WhiteMusicInfoBean {
 
     long musicPlayTime;
 
-    public WhiteMusicInfoBean(String musicName, Uri musicUri, Uri musicAlbumUri, Bitmap musicThumb, long musicDuration, long musicPlayTime) {
+    public WhiteMusicInfoBean(String musicName, String artistName, Uri musicUri, Uri musicAlbumUri, Bitmap musicThumb, long musicDuration, long musicPlayTime) {
         this.musicName = musicName;
+        this.artistName = artistName;
         this.musicUri = musicUri;
         this.musicAlbumUri = musicAlbumUri;
         this.musicThumb = musicThumb;
@@ -73,6 +76,14 @@ public class WhiteMusicInfoBean {
 
     public void setMusicPlayTime(long musicPlayTime) {
         this.musicPlayTime = musicPlayTime;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 
     //重写WhiteMusicInfoBean的equals()方法

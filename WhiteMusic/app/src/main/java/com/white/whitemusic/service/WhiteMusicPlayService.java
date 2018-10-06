@@ -19,7 +19,6 @@ import android.support.annotation.Nullable;
 
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
 import com.white.whitemusic.constant.WhiteMusicConstant;
-import com.white.whitemusic.helper.WhiteMusicAppWidget;
 import com.white.whitemusic.helper.WhiteMusicDBHelper;
 import com.white.whitemusic.helper.WhiteMusicListContentProvider;
 import com.white.whitemusic.listenr.OnMusicStatusChangeListener;
@@ -32,7 +31,7 @@ import java.util.List;
 public class WhiteMusicPlayService extends Service {
 
     private List<OnMusicStatusChangeListener> lsMusicStatusChangeListener = new ArrayList<OnMusicStatusChangeListener>();
-    // 已播放列表
+    // 播放列表
     private List<WhiteMusicInfoBean> lsWhiteMusicInfoBean;
     // 当前播放的音乐
     private WhiteMusicInfoBean currentMusicInfoBean;
@@ -138,6 +137,14 @@ public class WhiteMusicPlayService extends Service {
         public List<WhiteMusicInfoBean> getMusicPlayList() {
             return  lsWhiteMusicInfoBean;
         }
+
+        public int getCurrentMusicPosition() {
+            return getCurrentMusicPositionInner();
+        }
+
+        public int getCurrentMusicDuration() {
+            return getCurrentMusicDurationInner();
+        }
     }
 
     @Override
@@ -238,11 +245,13 @@ public class WhiteMusicPlayService extends Service {
                 String musicUri = cursor.getString(cursor.getColumnIndexOrThrow(WhiteMusicDBHelper.MUSIC_LIST_URI));
                 String albumUri = cursor.getString(cursor.getColumnIndexOrThrow(WhiteMusicDBHelper.MUSIC_LIST_ALBUM_URI));
                 String musicName = cursor.getString(cursor.getColumnIndex(WhiteMusicDBHelper.MUSIC_LIST_NAME));
+                String musicArtist = cursor.getString(cursor.getColumnIndex(WhiteMusicDBHelper.MUSIC_LIST_ARTIST));
                 long playedTime = cursor.getLong(cursor.getColumnIndexOrThrow(WhiteMusicDBHelper.LAST_PLAY_TIME));
                 long musicDuration = cursor.getLong(cursor.getColumnIndexOrThrow(WhiteMusicDBHelper.MUSIC_LIST_DURATION));
 
                 WhiteMusicInfoBean item = new WhiteMusicInfoBean(
                         musicName,
+                        musicArtist,
                         Uri.parse(musicUri),
                         Uri.parse(albumUri),
                         null,
@@ -403,6 +412,14 @@ public class WhiteMusicPlayService extends Service {
         lsMusicStatusChangeListener.remove(onMusicStatusChangeListener);
     }
 
+    private int getCurrentMusicPositionInner() {
+        return mediaPlayer.getCurrentPosition();
+    }
+
+    private int getCurrentMusicDurationInner() {
+        return mediaPlayer.getDuration();
+    }
+
     //
     private void updateMusicItemInfo(WhiteMusicInfoBean whiteMusicInfoBean) {
         ContentValues contentValues = new ContentValues();
@@ -432,10 +449,10 @@ public class WhiteMusicPlayService extends Service {
                 ContentResolver res = getContentResolver();
                 whiteMusicInfoBean.setMusicThumb(Utils.createThumbFromUir(res, whiteMusicInfoBean.getMusicAlbumUri()));
             }
-            WhiteMusicAppWidget.performUpdates(WhiteMusicPlayService.this,
-                    whiteMusicInfoBean.getMusicName(),
-                    getMediaPlayerPlaying(),
-                    whiteMusicInfoBean.getMusicThumb());
+//            WhiteMusicAppWidget.performUpdates(WhiteMusicPlayService.this,
+//                    whiteMusicInfoBean.getMusicName(),
+//                    getMediaPlayerPlaying(),
+//                    whiteMusicInfoBean.getMusicThumb());
         }
     }
 }

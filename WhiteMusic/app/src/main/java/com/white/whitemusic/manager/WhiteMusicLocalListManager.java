@@ -104,11 +104,10 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 		mListView.setAdapter(mWhiteMusicListAdapter);
 		// 注册ListView中选中Click
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 									int position, long arg3) {
-				mWhiteMusicServiceManager.addMusicPlayList((WhiteMusicInfoBean) mWhiteMusicListAdapter.getItem(position));
+				mWhiteMusicServiceManager.musicPlay(position);
 			}
 		});
 
@@ -120,7 +119,7 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
             mWhiteMusicScannerTask.whiteMusicListAdapter = mWhiteMusicListAdapter;
             mWhiteMusicScannerTask.execute();
         } else {
-			mWhiteMusicListAdapter.setData(mWhiteMusicServiceManager.getMusicPlayList());
+			mWhiteMusicListAdapter.setData(mWhiteMusicServiceManager.getMusicPlayList(), false);
 		}
 	}
 

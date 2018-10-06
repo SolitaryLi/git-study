@@ -101,6 +101,8 @@ public class WhiteMusicPlayService extends Service {
         public void musicPlay() {
             musicPlayInner();
         }
+        // 播放指定音乐
+        public void musicPlay(int position) { musicPlayInner(position); };
         // 播放下一曲
         public void musicPlayNext() {
             musicPlayNextInner();
@@ -264,6 +266,7 @@ public class WhiteMusicPlayService extends Service {
         }
 
         if (null != lsWhiteMusicInfoBean && !lsWhiteMusicInfoBean.isEmpty()) {
+            lsWhiteMusicInfoBean = Utils.sortMusicInfoList(lsWhiteMusicInfoBean);
             currentMusicInfoBean = lsWhiteMusicInfoBean.get(0);
         }
     }
@@ -293,7 +296,8 @@ public class WhiteMusicPlayService extends Service {
         }
 
         currentMusicInfoBean = lsWhiteMusicInfoBean.get(0);
-        musicPlayInner();
+        // 添加完播放第一首歌
+//        musicPlayInner();
     }
 
     // 添加音乐到音乐一览中
@@ -306,7 +310,7 @@ public class WhiteMusicPlayService extends Service {
             return;
         }
         // 新添加音乐，添加到List最开始位置
-        lsWhiteMusicInfoBean.add(0, whiteMusicInfoBean);
+        lsWhiteMusicInfoBean.add(whiteMusicInfoBean);
 
         insertMusicItemInfo(whiteMusicInfoBean);
 
@@ -319,6 +323,17 @@ public class WhiteMusicPlayService extends Service {
     private void musicPlayInner() {
         if (null == currentMusicInfoBean && !lsWhiteMusicInfoBean.isEmpty()) {
             currentMusicInfoBean = lsWhiteMusicInfoBean.get(0);
+        }
+        if (musicPaused) {
+            musicPlayCurrentInner(currentMusicInfoBean, false);
+        } else {
+            musicPlayCurrentInner(currentMusicInfoBean, true);
+        }
+    }
+
+    private void musicPlayInner(int position) {
+        if (null != lsWhiteMusicInfoBean && !lsWhiteMusicInfoBean.isEmpty()) {
+            currentMusicInfoBean = lsWhiteMusicInfoBean.get(position);
         }
         if (musicPaused) {
             musicPlayCurrentInner(currentMusicInfoBean, false);

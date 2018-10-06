@@ -71,6 +71,13 @@ public class WhiteMusicServiceManager {
             whiteMusicPlayService.musicPlay();
         }
     }
+
+    // 播放指定音乐
+    public void musicPlay(int position) {
+        if (null != whiteMusicPlayService) {
+            whiteMusicPlayService.musicPlay(position);
+        }
+    }
     // 播放下一曲
     public void musicPlayNext() {
         if (null != whiteMusicPlayService) {

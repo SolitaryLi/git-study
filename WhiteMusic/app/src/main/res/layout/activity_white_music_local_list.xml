@@ -10,16 +10,19 @@
         android:id="@+id/topLayout"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
-        android:background="@color/colorHalf" >
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorHalf">
 
-        <ImageButton android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginTop="9dp"
             android:background="@drawable/selector_music_btn"
-            android:padding="10dip"
-            android:src="@drawable/icon_back"/>
+            android:src="@mipmap/icon_back_home" />
 
         <TextView
             android:id="@+id/topTv"
@@ -33,13 +36,13 @@
 
         <ImageButton
             android:id="@+id/searchBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
             android:background="@drawable/selector_music_btn"
-            android:padding="10.0dip"
-            android:src="@drawable/icon_search" />
+            android:layout_marginTop="9dp"
+            android:src="@mipmap/icon_search" />
     </RelativeLayout>
 
     <RelativeLayout

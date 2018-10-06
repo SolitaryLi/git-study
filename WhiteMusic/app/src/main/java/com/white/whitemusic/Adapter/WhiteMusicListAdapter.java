@@ -140,7 +140,7 @@ public class WhiteMusicListAdapter extends BaseAdapter {
 
     }
 
-    public void setData(List<WhiteMusicInfoBean> pLsWhiteMusicInfoBean) {
+    public void setData(List<WhiteMusicInfoBean> pLsWhiteMusicInfoBean, boolean pDbFlag) {
 //        mLsWhiteMusicInfoBean.clear();
         if (pLsWhiteMusicInfoBean != null && !pLsWhiteMusicInfoBean.isEmpty()) {
             for(WhiteMusicInfoBean pWhiteMusicInfoBean : pLsWhiteMusicInfoBean) {
@@ -156,9 +156,13 @@ public class WhiteMusicListAdapter extends BaseAdapter {
                 }
             }
 //            mLsWhiteMusicInfoBean.addAll(pLsWhiteMusicInfoBean);
-//            mWhiteMusicServiceManager.addMusicPlayList(mLsWhiteMusicInfoBean);
+
             // 为list排序
             mLsWhiteMusicInfoBean = Utils.sortMusicInfoList(mLsWhiteMusicInfoBean);
+            // 保存到数据库中
+            if (pDbFlag) {
+                mWhiteMusicServiceManager.addMusicPlayList(mLsWhiteMusicInfoBean);
+            }
             // 数据有变化的场合，调用GetView方法，刷新UI
             notifyDataSetChanged();
         }

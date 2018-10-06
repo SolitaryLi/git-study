@@ -93,6 +93,6 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
         // 这是主线程，在这里把要显示的音乐添加到音乐的展示列表当中。
         List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();
         lsWhiteMusicInfoBean.add(whiteMusicInfoBean);
-        whiteMusicListAdapter.setData(lsWhiteMusicInfoBean);
+        whiteMusicListAdapter.setData(lsWhiteMusicInfoBean, true);
     }
 }

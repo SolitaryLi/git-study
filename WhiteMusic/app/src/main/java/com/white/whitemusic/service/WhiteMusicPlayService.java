@@ -451,6 +451,7 @@ public class WhiteMusicPlayService extends Service {
     private void insertMusicItemInfo(WhiteMusicInfoBean whiteMusicInfoBean) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(WhiteMusicDBHelper.MUSIC_LIST_NAME, whiteMusicInfoBean.getMusicName());
+        contentValues.put(WhiteMusicDBHelper.MUSIC_LIST_ARTIST, whiteMusicInfoBean.getArtistName());
         contentValues.put(WhiteMusicDBHelper.MUSIC_LIST_DURATION, whiteMusicInfoBean.getMusicDuration());
         contentValues.put(WhiteMusicDBHelper.LAST_PLAY_TIME, whiteMusicInfoBean.getMusicPlayTime());
         contentValues.put(WhiteMusicDBHelper.MUSIC_LIST_URI, whiteMusicInfoBean.getMusicUri().toString());

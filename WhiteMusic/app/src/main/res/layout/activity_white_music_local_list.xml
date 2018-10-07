@@ -10,19 +10,19 @@
         android:id="@+id/topLayout"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="@color/colorHalf">
 
-        <ImageButton
+        <Button
             android:id="@+id/backBtn"
             android:layout_width="33dp"
             android:layout_height="33dp"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="9dp"
-            android:background="@drawable/selector_music_btn"
-            android:src="@mipmap/icon_back_home" />
+            android:background="@mipmap/icon_back_home"
+            android:text="" />
 
         <TextView
             android:id="@+id/topTv"
@@ -34,15 +34,16 @@
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/view_title_text_size" />
 
-        <ImageButton
+        <Button
             android:id="@+id/searchBtn"
             android:layout_width="33dp"
             android:layout_height="33dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/selector_music_btn"
             android:layout_marginTop="9dp"
-            android:src="@mipmap/icon_search" />
+            android:background="@mipmap/icon_search"
+            android:text="" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -195,7 +196,7 @@
         android:divider="@color/colorDivider"
         android:dividerHeight="0.5dip" />
 
-<!--   <com.white.whitemusic.view.MySlidingDrawer
+   <com.white.whitemusic.view.WhiteMusicSlidingDrawer
         android:id="@+id/slidingDrawer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -207,6 +208,6 @@
         <include layout="@layout/sliding_handle" />
 
         <include layout="@layout/sliding_content" />
-    </com.white.whitemusic.view.MySlidingDrawer>-->
+    </com.white.whitemusic.view.WhiteMusicSlidingDrawer>
 
 </RelativeLayout>

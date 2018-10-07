@@ -30,7 +30,7 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 
 	private LayoutInflater mLayoutInflater;
 	private Activity mActivity;
-	private RelativeLayout mMainLayout;
+	private RelativeLayout mMainLayout, mBottomLayout;
 	private ListView mListView;
 
 	private WhiteMusicListAdapter mWhiteMusicListAdapter;
@@ -38,6 +38,7 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 	private WhiteMusicLocalListUIManager mWhiteMusicLocalListUIManager;
 	private WhiteMusicUIManager mWhiteMusicUIManager;
 	private WhiteMusicScannerTask mWhiteMusicScannerTask;
+	private SlidingDrawerManager mSdm;
 
 	// 初期化
 	public WhiteMusicLocalListManager(Activity activity, WhiteMusicUIManager whiteMusicUIManager) {
@@ -80,6 +81,7 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 
 	private void initView(View view) {
 		mWhiteMusicServiceManager = MainApplication.mWhiteMusicServiceManager;
+		mBottomLayout = (RelativeLayout) view.findViewById(R.id.main_bottom_layout);
 
 		mListView = (ListView) view.findViewById(R.id.music_listview);
 		mActivity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -88,6 +90,8 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 
 		mWhiteMusicLocalListUIManager = new WhiteMusicLocalListUIManager(mActivity, mWhiteMusicServiceManager, view,
 				mWhiteMusicUIManager);
+
+		mSdm = new SlidingDrawerManager(mActivity, mWhiteMusicServiceManager, view);
 
 		initListView();
 		initListViewStatus();
@@ -124,11 +128,22 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 	}
 
 	private void initListViewStatus() {
-		mWhiteMusicLocalListUIManager.showPlay(false);
+		mSdm.setListViewAdapter(mWhiteMusicListAdapter);
+		mSdm.showPlay(true);
+		mWhiteMusicLocalListUIManager.showPlay(true);
 	}
 
+	int oldY = 0;
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+		int bottomTop = mBottomLayout.getTop();
+		System.out.println(bottomTop);
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			oldY = (int) event.getY();
+			if (oldY > bottomTop) {
+				mSdm.open();
+			}
+		}
 		return true;
 	}
 

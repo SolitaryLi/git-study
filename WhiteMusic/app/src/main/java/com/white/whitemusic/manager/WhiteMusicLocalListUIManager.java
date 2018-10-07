@@ -40,7 +40,7 @@ public class WhiteMusicLocalListUIManager implements OnClickListener {
 	private Button mPlayBtn;
     private Button mPauseBtn;
 	private Button mNextBtn;
-	private ImageButton mSearchBtn, mBackBtn;
+	private Button mSearchBtn, mBackBtn;
 	private WhiteMusicUIManager mWhiteMusicUIManager;
 
 
@@ -64,8 +64,8 @@ public class WhiteMusicLocalListUIManager implements OnClickListener {
 	// 页面初始化
 	private void initView() {
 
-		mSearchBtn = (ImageButton) findViewById(R.id.searchBtn);
-		mBackBtn = (ImageButton) findViewById(R.id.backBtn);
+		mSearchBtn = (Button) findViewById(R.id.searchBtn);
+		mBackBtn = (Button) findViewById(R.id.backBtn);
 
 		mMusicNameTv = (AlwaysMarqueeTextView) findViewById(R.id.musicname_tv2);
 		mArtistTv = (AlwaysMarqueeTextView) findViewById(R.id.artist_tv2);
@@ -149,10 +149,10 @@ public class WhiteMusicLocalListUIManager implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.play_btn:
-				mWhiteMusicServiceManager.musicPlayPause();
+				mWhiteMusicServiceManager.musicPlay();
 				break;
 			case R.id.pause_btn:
-				mWhiteMusicServiceManager.musicPlay();
+				mWhiteMusicServiceManager.musicPlayPause();
 				break;
 			case R.id.next_btn:
 				mWhiteMusicServiceManager.musicPlayNext();

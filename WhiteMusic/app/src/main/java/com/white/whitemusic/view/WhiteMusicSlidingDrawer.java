@@ -13,7 +13,7 @@ import android.widget.SlidingDrawer;
 import com.white.whitemusic.listenr.IOnSlidingHandleViewClickListener;
 
 // TODO
-public class MySlidingDrawer extends SlidingDrawer{
+public class WhiteMusicSlidingDrawer extends SlidingDrawer{
     private int mHandleId = 0;              	 //抽屉行为控件ID
     private int[] mTouchableIds = null;    		//Handle 部分其他控件ID
     
@@ -42,11 +42,11 @@ public class MySlidingDrawer extends SlidingDrawer{
     	mTouchViewClickListener = listener;
     }
 
-    public MySlidingDrawer(Context context, AttributeSet attrs) {
+    public WhiteMusicSlidingDrawer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
     
-    public MySlidingDrawer(Context context, AttributeSet attrs, int defStyle){
+    public WhiteMusicSlidingDrawer(Context context, AttributeSet attrs, int defStyle){
         super(context, attrs, defStyle);
     }
     

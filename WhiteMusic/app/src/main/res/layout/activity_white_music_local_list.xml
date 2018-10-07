@@ -201,13 +201,12 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/sliding_bg"
-        android:content="@+id/content"
+        android:content="@+id/sildingMusicPlay"
         android:handle="@+id/handle"
         android:visibility="invisible" >
 
-        <include layout="@layout/sliding_handle" />
-
-        <include layout="@layout/sliding_content" />
+       <include layout="@layout/sliding_handle" />
+        <include layout="@layout/sliding_white_music_play" />
     </com.white.whitemusic.view.WhiteMusicSlidingDrawer>
 
 </RelativeLayout>

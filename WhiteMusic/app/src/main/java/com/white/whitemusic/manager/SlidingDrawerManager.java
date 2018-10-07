@@ -110,9 +110,9 @@ public class SlidingDrawerManager implements OnClickListener,
 //		mLyricLoadHelper = new LyricLoadHelper();
 //		mLyricLoadHelper.setLyricListener(mLyricListener);
 
-		DisplayMetrics metric = new DisplayMetrics();
-		a.getWindowManager().getDefaultDisplay().getMetrics(metric);
-		mScreenWidth = metric.widthPixels;
+//		DisplayMetrics metric = new DisplayMetrics();
+//		a.getWindowManager().getDefaultDisplay().getMetrics(metric);
+//		mScreenWidth = metric.widthPixels;
 
 		// 歌词秀设置---------------------------------------------------------------
 //		mLyricAdapter = new LyricAdapter(a);
@@ -144,6 +144,7 @@ public class SlidingDrawerManager implements OnClickListener,
 		mListView = (ListView) findViewById(R.id.music_listview);
 		mGridView = (GridView) findViewById(R.id.gridview);
 		mSliding = (WhiteMusicSlidingDrawer) findViewById(R.id.slidingDrawer);
+
 		mMusicNameTv = (TextView) findViewById(R.id.musicname_tv);
 		mArtistTv = (TextView) findViewById(R.id.artist_tv);
 		mPrevBtn = (ImageButton) findViewById(R.id.btn_playPre);
@@ -154,6 +155,8 @@ public class SlidingDrawerManager implements OnClickListener,
 		mShowMoreBtn = (ImageButton) findViewById(R.id.btn_more);
 		mFavoriteBtn = (ImageButton) findViewById(R.id.btn_favorite);
 		mMoveIv = (ImageView) findViewById(R.id.move_iv);
+
+
 		mLrcListView = (ListView) findViewById(R.id.lyricshow);
 		mLrcEmptyView = (TextView) findViewById(R.id.lyric_empty);
 

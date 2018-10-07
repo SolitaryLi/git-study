@@ -38,7 +38,7 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 	private WhiteMusicLocalListUIManager mWhiteMusicLocalListUIManager;
 	private WhiteMusicUIManager mWhiteMusicUIManager;
 	private WhiteMusicScannerTask mWhiteMusicScannerTask;
-	private SlidingDrawerManager mSdm;
+	private WhiteMusicPlayManager mWhiteMusicPlayManager;
 
 	// 初期化
 	public WhiteMusicLocalListManager(Activity activity, WhiteMusicUIManager whiteMusicUIManager) {
@@ -51,6 +51,7 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 	private OnMusicStatusChangeListener onMusicStatusChangeListener = new OnMusicStatusChangeListener() {
 		@Override
 		public void onMusicPlayProgressChange(WhiteMusicInfoBean whiteMusicInfoBean) {
+			mWhiteMusicPlayManager.refreshUI(new Long(whiteMusicInfoBean.getMusicPlayTime()).intValue(), new Long(whiteMusicInfoBean.getMusicDuration()).intValue(), whiteMusicInfoBean);
 			mWhiteMusicLocalListUIManager.refreshUI(new Long(whiteMusicInfoBean.getMusicPlayTime()).intValue(), new Long(whiteMusicInfoBean.getMusicDuration()).intValue(), whiteMusicInfoBean);
 		}
 		@Override
@@ -58,10 +59,12 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 //			mPlayBtn.setBackgroundResource(R.mipmap.ic_pause);
 //			updatePlayingInfo(whiteMusicInfoBean);
 //			enableControlPanel(true);
+			mWhiteMusicPlayManager.showPlay(false);
 			mWhiteMusicLocalListUIManager.showPlay(false);
 		}
 		@Override
 		public void onMusicPause(WhiteMusicInfoBean whiteMusicInfoBean) {
+			mWhiteMusicPlayManager.showPlay(true);
 			mWhiteMusicLocalListUIManager.showPlay(true);
 //			mPlayBtn.setBackgroundResource(R.mipmap.ic_play);
 //			enableControlPanel(true);
@@ -91,7 +94,7 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 		mWhiteMusicLocalListUIManager = new WhiteMusicLocalListUIManager(mActivity, mWhiteMusicServiceManager, view,
 				mWhiteMusicUIManager);
 
-		mSdm = new SlidingDrawerManager(mActivity, mWhiteMusicServiceManager, view);
+		mWhiteMusicPlayManager = new WhiteMusicPlayManager(mActivity, mWhiteMusicServiceManager, view);
 
 		initListView();
 		initListViewStatus();
@@ -128,8 +131,8 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 	}
 
 	private void initListViewStatus() {
-		mSdm.setListViewAdapter(mWhiteMusicListAdapter);
-		mSdm.showPlay(true);
+		mWhiteMusicPlayManager.setListViewAdapter(mWhiteMusicListAdapter);
+		mWhiteMusicPlayManager.showPlay(true);
 		mWhiteMusicLocalListUIManager.showPlay(true);
 	}
 
@@ -137,11 +140,10 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		int bottomTop = mBottomLayout.getTop();
-		System.out.println(bottomTop);
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			oldY = (int) event.getY();
 			if (oldY > bottomTop) {
-				mSdm.open();
+				mWhiteMusicPlayManager.openPlayView();
 			}
 		}
 		return true;

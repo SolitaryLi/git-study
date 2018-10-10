@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import com.white.whitemusic.Adapter.WhiteMusicMainAdapter;
 import com.white.whitemusic.MainApplication;
 import com.white.whitemusic.R;
+import com.white.whitemusic.manager.WhiteMusicPlayManager;
+import com.white.whitemusic.manager.WhiteMusicServiceManager;
 import com.white.whitemusic.manager.WhiteMusicUIManager;
 
 /**
@@ -29,11 +31,14 @@ public class WhiteMusicMainActivity extends Fragment implements View.OnTouchList
     private GridView mGridView;
     private WhiteMusicMainAdapter mWhiteMusicMainAdapter;
     private WhiteMusicUIManager mWhiteMusicUIManager;
+    private WhiteMusicPlayManager mWhiteMusicPlayManager;
     private RelativeLayout mWhiteMusicMain, mMainBottomLayout;
+    private WhiteMusicServiceManager mWhiteMusicServiceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mWhiteMusicServiceManager = MainApplication.mWhiteMusicServiceManager;
     }
 
     // 创建主页视图
@@ -57,6 +62,8 @@ public class WhiteMusicMainActivity extends Fragment implements View.OnTouchList
         mWhiteMusicUIManager = new WhiteMusicUIManager(getActivity(), view);
         // 刷新主页内容
         mWhiteMusicUIManager.setOnRefreshListener(this);
+
+        mWhiteMusicPlayManager = new WhiteMusicPlayManager(getActivity(), mWhiteMusicServiceManager,view);
         // TODO 绑定Main Adapter(适配器)
         mWhiteMusicMainAdapter = new WhiteMusicMainAdapter(this, mWhiteMusicUIManager);
         // Grid View绑定适配器内容
@@ -65,10 +72,17 @@ public class WhiteMusicMainActivity extends Fragment implements View.OnTouchList
         return view;
     }
 
-
+    int oldY = 0;
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        return false;
+        int bottomTop = mMainBottomLayout.getTop();
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            oldY = (int) event.getY();
+            if (oldY > bottomTop) {
+                mWhiteMusicPlayManager.openPlayView();
+            }
+        }
+        return true;
     }
 
     @Override

@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dialog_frm_background"
+    android:background="@drawable/sliding_bg"
     android:orientation="vertical" >
 
     <RelativeLayout android:id="@+id/topLayout"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
-        android:background="@color/holo_blue_light"
+        android:background="@color/colorBlue"
         android:orientation="horizontal" >
 
         <ImageButton
@@ -25,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="扫描歌曲"
-            android:textColor="@color/white"
-            android:textSize="@dimen/title_text_sp" />
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/view_title_text_size" />
     </RelativeLayout>
 
     <ImageView
@@ -43,11 +43,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/selector_scan_btn"
+
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="70dip"
         android:text="开始扫描"
         android:textSize="22sp"
-        android:textColor="@color/white" />
+        android:textColor="@color/colorWhite" />
 
 </RelativeLayout>

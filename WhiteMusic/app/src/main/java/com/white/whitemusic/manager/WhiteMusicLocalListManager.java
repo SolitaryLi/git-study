@@ -120,14 +120,14 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 
 		// DB中如存在获取DB中的数据显示到UI中，如不存在检索CD卡中的数据显示到UI中并保存到数据库中
 		// TODO
-        if (null == mWhiteMusicServiceManager.getMusicPlayList() || mWhiteMusicServiceManager.getMusicPlayList().isEmpty()) {
-            mWhiteMusicScannerTask = new WhiteMusicScannerTask();
-            mWhiteMusicScannerTask.context = mActivity;
-            mWhiteMusicScannerTask.whiteMusicListAdapter = mWhiteMusicListAdapter;
-            mWhiteMusicScannerTask.execute();
-        } else {
+//        if (null == mWhiteMusicServiceManager.getMusicPlayList() || mWhiteMusicServiceManager.getMusicPlayList().isEmpty()) {
+//            mWhiteMusicScannerTask = new WhiteMusicScannerTask();
+//            mWhiteMusicScannerTask.context = mActivity;
+//            mWhiteMusicScannerTask.whiteMusicListAdapter = mWhiteMusicListAdapter;
+//            mWhiteMusicScannerTask.execute();
+//        } else {
 			mWhiteMusicListAdapter.setData(mWhiteMusicServiceManager.getMusicPlayList(), false);
-		}
+//		}
 	}
 
 	private void initListViewStatus() {

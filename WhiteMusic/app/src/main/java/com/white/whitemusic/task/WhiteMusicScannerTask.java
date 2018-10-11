@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.white.whitemusic.Adapter.WhiteMusicListAdapter;
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
 import com.white.whitemusic.manager.WhiteMusicLocalListManager;
+import com.white.whitemusic.manager.WhiteMusicServiceManager;
 import com.white.whitemusic.utils.Utils;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
 
     public Context context;
     public WhiteMusicListAdapter whiteMusicListAdapter;
+    public WhiteMusicServiceManager mWhiteMusicServiceManager;
 
     @Override
     protected Void doInBackground(Object... objects) {
@@ -77,7 +79,7 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
                     whiteMusicInfoBean.setMusicThumb(Utils.createThumbFromUir(res, musicAlbumUri));
                 }
 
-                publishProgress(whiteMusicInfoBean);
+//                publishProgress(whiteMusicInfoBean);
             }
             // 资源释放
             cursor.close();
@@ -85,14 +87,14 @@ public class WhiteMusicScannerTask extends AsyncTask<Object, WhiteMusicInfoBean,
         return null;
     }
 
-    @Override
-    protected void onProgressUpdate(WhiteMusicInfoBean... values) {
-
-        WhiteMusicInfoBean whiteMusicInfoBean = values[0];
-
-        // 这是主线程，在这里把要显示的音乐添加到音乐的展示列表当中。
-        List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();
-        lsWhiteMusicInfoBean.add(whiteMusicInfoBean);
-        whiteMusicListAdapter.setData(lsWhiteMusicInfoBean, true);
-    }
+//    @Override
+//    protected void onProgressUpdate(WhiteMusicInfoBean... values) {
+//
+//        WhiteMusicInfoBean whiteMusicInfoBean = values[0];
+//
+//        // 这是主线程，在这里把要显示的音乐添加到音乐的展示列表当中。
+//        List<WhiteMusicInfoBean> lsWhiteMusicInfoBean = new ArrayList<WhiteMusicInfoBean>();
+//        lsWhiteMusicInfoBean.add(whiteMusicInfoBean);
+//        whiteMusicListAdapter.setData(lsWhiteMusicInfoBean, true);
+//    }
 }

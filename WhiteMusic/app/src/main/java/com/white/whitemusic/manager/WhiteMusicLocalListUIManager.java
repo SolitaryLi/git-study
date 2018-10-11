@@ -6,6 +6,7 @@ package com.white.whitemusic.manager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.white.whitemusic.R;
+import com.white.whitemusic.activity.WhiteMusicScannerActivity;
 import com.white.whitemusic.bean.WhiteMusicInfoBean;
 import com.white.whitemusic.utils.Utils;
 import com.white.whitemusic.view.AlwaysMarqueeTextView;
@@ -158,8 +160,8 @@ public class WhiteMusicLocalListUIManager implements OnClickListener {
 				mWhiteMusicServiceManager.musicPlayNext();
 				break;
 			case R.id.searchBtn:
-//				mActivity.startActivity(new Intent(mActivity,
-//						MusicListSearchActivity.class));
+				mActivity.startActivity(new Intent(mActivity,
+						WhiteMusicScannerActivity.class));
 				break;
 			case R.id.backBtn:
 				mWhiteMusicUIManager.setCurrentItem();

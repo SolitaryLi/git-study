@@ -11,4 +11,11 @@
     <color name="colorBlue">#ff33b5e5</color>
     <color name="colorDivider">#6fffffff</color>
     <color name="colorBottom">#00000000</color>
+    <!--象牙色-->
+    <color name="colorIvory">#FFFFF0</color>
+    <!--幽灵白-->
+    <color name="colorGhostWhite">#F8F8FF</color>
+    <!--暗灰色-->
+    <color name="colorDimgray">#696969</color>
+
 </resources>

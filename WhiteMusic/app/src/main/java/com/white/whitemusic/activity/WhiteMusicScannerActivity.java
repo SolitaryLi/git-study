@@ -12,6 +12,7 @@ import com.white.whitemusic.fragment.WhiteMusicScannerFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+// 扫描本地数据
 public class WhiteMusicScannerActivity extends FragmentActivity {
 
     public ViewPager mViewPager;
@@ -31,7 +32,9 @@ public class WhiteMusicScannerActivity extends FragmentActivity {
         mListFragment.add(fragment);
         mWhiteMusicScannerAdapter = new WhiteMusicScannerAdapter(getSupportFragmentManager(), mListFragment);
         mViewPager.setAdapter(mWhiteMusicScannerAdapter);
-        mViewPager.setOnPageChangeListener(new OnPageChangeListener());
+        // setOnPageChangeListener方法使用addOnPageChangeListener替代
+        mViewPager.addOnPageChangeListener(new OnPageChangeListener());
+        // 通过index制定页面
         mViewPager.setCurrentItem(1, true);
     }
 
@@ -54,7 +57,7 @@ public class WhiteMusicScannerActivity extends FragmentActivity {
             }
         }
 
-        // 当当前页面被滑动时调用
+        // 当前页面被滑动时调用
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
             onPageScrolled = arg0;

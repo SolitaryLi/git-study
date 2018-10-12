@@ -3,7 +3,7 @@
     android:id="@+id/main_mymusic_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sliding_bg"
+    android:background="@color/colorGhostWhite"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -175,6 +175,15 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_below="@id/topLayout"
+        android:layout_marginTop="70dip"
+        android:src="@drawable/img_scan_logo" />
 
     <ProgressBar
         android:id="@+id/playback_seekbar2"

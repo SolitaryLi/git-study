@@ -56,9 +56,6 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 		}
 		@Override
 		public void onMusicPlay(WhiteMusicInfoBean whiteMusicInfoBean) {
-//			mPlayBtn.setBackgroundResource(R.mipmap.ic_pause);
-//			updatePlayingInfo(whiteMusicInfoBean);
-//			enableControlPanel(true);
 			mWhiteMusicPlayManager.showPlay(false);
 			mWhiteMusicLocalListUIManager.showPlay(false);
 		}
@@ -66,8 +63,6 @@ public class WhiteMusicLocalListManager extends WhiteMusicMainUIManager implemen
 		public void onMusicPause(WhiteMusicInfoBean whiteMusicInfoBean) {
 			mWhiteMusicPlayManager.showPlay(true);
 			mWhiteMusicLocalListUIManager.showPlay(true);
-//			mPlayBtn.setBackgroundResource(R.mipmap.ic_play);
-//			enableControlPanel(true);
 		}
 	};
 

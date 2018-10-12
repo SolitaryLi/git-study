@@ -27,7 +27,7 @@ public class WhiteMusicMainAdapter extends BaseAdapter {
     };
 
     private String[] mName = new String[] {
-            "我的音乐",
+            "本地音乐",
             "我的最爱",
             "文件夹",
             "歌手",
@@ -50,7 +50,7 @@ public class WhiteMusicMainAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 1;
     }
 
     @Override

@@ -27,17 +27,21 @@ import com.white.whitemusic.manager.WhiteMusicUIManager;
  */
 public class WhiteMusicMainActivity extends Fragment implements View.OnTouchListener, WhiteMusicUIManager.OnRefreshListener {
 
-
+    // GridView 控件用于把一系列的空间组织成一个二维的网格显示出来
     private GridView mGridView;
     private WhiteMusicMainAdapter mWhiteMusicMainAdapter;
     private WhiteMusicUIManager mWhiteMusicUIManager;
+    // 主播放控制页面
     private WhiteMusicPlayManager mWhiteMusicPlayManager;
+    // 相对布局控件,它包含的子控件将以控件之间的相对位置或者子类控件相对父类容器的位置方式排序
     private RelativeLayout mWhiteMusicMain, mMainBottomLayout;
+    // 数据交互类
     private WhiteMusicServiceManager mWhiteMusicServiceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 获取数据交互类
         mWhiteMusicServiceManager = MainApplication.mWhiteMusicServiceManager;
     }
 
@@ -72,6 +76,9 @@ public class WhiteMusicMainActivity extends Fragment implements View.OnTouchList
         return view;
     }
 
+    // MotionEvent.ACTION_DOWN是指触摸起始
+    // MotionEvent.ACTION_MOVE是指触摸滑动
+    // MotionEvent.ACTION_UP是指触摸拿起
     int oldY = 0;
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -79,6 +86,7 @@ public class WhiteMusicMainActivity extends Fragment implements View.OnTouchList
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             oldY = (int) event.getY();
             if (oldY > bottomTop) {
+                // 打开播放主页面
                 mWhiteMusicPlayManager.openPlayView();
             }
         }

@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 
 import com.white.whitemusic.R;
 import com.white.whitemusic.activity.WhiteMusicScannerActivity;
+import com.white.whitemusic.service.WhiteMusicScannerService;
 
 public class WhiteMusicScannerFragment extends Fragment implements View.OnClickListener{
 
@@ -20,6 +21,7 @@ public class WhiteMusicScannerFragment extends Fragment implements View.OnClickL
     private Button mScanBtn;
     private ProgressDialog mProgressDialog;
     private Handler mHandler;
+    private WhiteMusicScannerService mWhiteMusicScannerService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class WhiteMusicScannerFragment extends Fragment implements View.OnClickL
         mScanBtn = (Button) view.findViewById(R.id.scanBtn);
         mBackBtn.setOnClickListener(this);
         mScanBtn.setOnClickListener(this);
+
+        mWhiteMusicScannerService = new WhiteMusicScannerService((WhiteMusicScannerActivity)getActivity());
 
         mHandler = new Handler() {
             @Override
@@ -55,9 +59,19 @@ public class WhiteMusicScannerFragment extends Fragment implements View.OnClickL
             mProgressDialog.setCancelable(false);
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.show();
-
+            getLocalMusicData();
         } else if(view == mBackBtn) {
             ((WhiteMusicScannerActivity)getActivity()).mViewPager.setCurrentItem(0, true);
         }
+    }
+
+    private void getLocalMusicData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mWhiteMusicScannerService.scannerLocalMusic();
+                mHandler.sendEmptyMessage(1);
+            }
+        }).start();
     }
 }

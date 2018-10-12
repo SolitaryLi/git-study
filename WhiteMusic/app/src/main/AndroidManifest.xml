@@ -30,7 +30,7 @@
         </activity>
 
         <activity android:name=".activity.WhiteMusicPlayActivity" />
-        <!-- <activity android:name=".activity.WhiteMusicMainActivity" /> -->
+        <activity android:name=".activity.WhiteMusicScannerActivity" />
 
         <provider
             android:name=".helper.WhiteMusicListContentProvider"
